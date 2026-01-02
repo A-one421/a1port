@@ -15,6 +15,24 @@
     />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <style>
+      .hidden {
+        display: none;
+      }
+      
+      .fa-spinner {
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    
     <script>
       tailwind.config = {
         theme: {
@@ -256,21 +274,20 @@
             </h3>
 
             <div class="space-y-4 text-gray-600 text-base sm:text-lg">
-             <p>
-  Hello, I’m Ayomide — a Frontend Web Developer who designs and builds modern
-  , responsive websites with a strong focus on usability and performance. 
-  I create digital experiences that are visually clean, intuitive, 
-  and aligned with real business needs.
-</p>
+              <p>
+                Hello, I'm Ayomide — a Frontend Web Developer who designs and builds modern
+                , responsive websites with a strong focus on usability and performance. 
+                I create digital experiences that are visually clean, intuitive, 
+                and aligned with real business needs.
+              </p>
 
-<p>
-  I specialize in translating ideas into fast, functional, 
-  and scalable web solutions, combining thoughtful interface 
-  design with solid frontend development. From engaging user interfaces 
-  to high-performing web applications, I help brands establish a strong and 
-  professional online presence.
-</p>
-
+              <p>
+                I specialize in translating ideas into fast, functional, 
+                and scalable web solutions, combining thoughtful interface 
+                design with solid frontend development. From engaging user interfaces 
+                to high-performing web applications, I help brands establish a strong and 
+                professional online presence.
+              </p>
             </div>
 
             <div class="mt-8">
@@ -486,12 +503,10 @@
               ></div>
             </div>
             <div class="p-6">
-              <h3 class="text-2xl font-bold mb-3 text-gray-900">Technova</h3>
+              <h3 class="text-2xl font-bold mb-3 text-gray-900">Technnova</h3>
               <p class="text-gray-600 mb-4">
-                
-  Technnova is a modern gadget sales platform focused on simplicity,
-   usability, and efficient product discovery.
-
+                Technnova is a modern gadget sales platform focused on simplicity,
+                usability, and efficient product discovery.
               </p>
               <div class="flex flex-wrap gap-2 mb-4">
                 <span
@@ -540,12 +555,11 @@
             </div>
             <div class="p-6">
               <h3 class="text-2xl font-bold mb-3 text-gray-900">
-              Iconic Innovation
+                Iconic Innovation
               </h3>
               <p class="text-gray-600 mb-4">
-              A startup company focused on innovation,
-               skill development, and technology-driven solutions.
-        
+                A startup company focused on innovation,
+                skill development, and technology-driven solutions.
               </p>
               <div class="flex flex-wrap gap-2 mb-4">
                 <span
@@ -560,14 +574,13 @@
                   class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium"
                   >JavaScript</span
                 >
-                
               </div>
               <div class="flex gap-3">
                 <a
                   href="https://iconicinnovations.com.ng/"
                   class="flex-1 bg-primary text-white py-2 rounded-lg text-center hover:bg-secondary transition-colors duration-300"
                 >
-                  <i class="iconicinnovations.com.ng"></i>View Live
+                  <i class="fas fa-external-link-alt mr-2"></i>View Live
                 </a>
               </div>
             </div>
@@ -615,7 +628,7 @@
               </div>
               <div class="flex gap-3">
                 <a
-                  href="debbyhautecouture.vercel.app"
+                  href="https://debbyhautecouture.vercel.app"
                   class="flex-1 bg-primary text-white py-2 rounded-lg text-center hover:bg-secondary transition-colors duration-300"
                 >
                   <i class="fas fa-external-link-alt mr-2"></i>View Live
@@ -664,7 +677,7 @@
               </div>
               <div class="flex gap-3">
                 <a
-                  href="a1port.vercel.app"
+                  href="https://a1port.vercel.app"
                   class="flex-1 bg-primary text-white py-2 rounded-lg text-center hover:bg-secondary transition-colors duration-300"
                 >
                   <i class="fas fa-external-link-alt mr-2"></i>View Live
@@ -672,8 +685,8 @@
               </div>
             </div>
           </div>
-
-         
+        </div>
+      </div>
     </section>
 
     <!-- Services Section -->
@@ -856,6 +869,7 @@
         </div>
       </div>
     </section>
+
     <!-- Contact Section -->
     <section
       id="contact"
@@ -1056,6 +1070,7 @@
         </div>
       </div>
     </section>
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
@@ -1151,6 +1166,131 @@
         </div>
       </div>
     </footer>
-    <script src="script.js"></script>
+
+    <script>
+      // Initialize EmailJS
+      (function() {
+        emailjs.init("onGXsnomyfbaJ9Vv5"); // Your public key
+      })();
+
+      // Contact Form Submission
+      document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const sendIcon = document.getElementById('sendIcon');
+
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          // Show loading state
+          btnText.textContent = 'Sending...';
+          spinner.classList.remove('hidden');
+          sendIcon.classList.add('hidden');
+          submitBtn.disabled = true;
+          
+          // Hide any previous messages
+          successMessage.classList.add('hidden');
+          errorMessage.classList.add('hidden');
+
+          // Prepare template parameters
+          const templateParams = {
+            from_name: document.getElementById('name').value,
+            from_email: document.getElementById('email').value,
+            subject: document.getElementById('subject').value,
+            message: document.getElementById('message').value,
+            to_name: 'Ayomide',
+            reply_to: document.getElementById('email').value
+          };
+
+          // Send email using EmailJS
+          emailjs.send('service_yrem8dr', 'template_r24k5fe', templateParams)
+            .then(function(response) {
+              console.log('SUCCESS!', response.status, response.text);
+              
+              // Show success message
+              successMessage.classList.remove('hidden');
+              
+              // Reset form
+              contactForm.reset();
+              
+              // Reset button state
+              resetButton();
+              
+              // Hide success message after 5 seconds
+              setTimeout(() => {
+                successMessage.classList.add('hidden');
+              }, 5000);
+            })
+            .catch(function(error) {
+              console.error('FAILED...', error);
+              
+              // Show error message
+              errorMessage.classList.remove('hidden');
+              
+              // Reset button state
+              resetButton();
+              
+              // Hide error message after 5 seconds
+              setTimeout(() => {
+                errorMessage.classList.add('hidden');
+              }, 5000);
+            });
+        });
+
+        function resetButton() {
+          btnText.textContent = 'Send Message';
+          spinner.classList.add('hidden');
+          sendIcon.classList.remove('hidden');
+          submitBtn.disabled = false;
+        }
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuBtn && mobileMenu) {
+          mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+          });
+
+          // Close mobile menu when clicking on a link
+          const mobileLinks = mobileMenu.querySelectorAll('a');
+          mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+              mobileMenu.classList.add('hidden');
+            });
+          });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+
+        // Initialize AOS
+        AOS.init({
+          duration: 1000,
+          once: true,
+          offset: 100
+        });
+      });
+    </script>
   </body>
 </html>
